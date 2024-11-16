@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import logging
 from typing import Dict, List, Any
 
 class Database:
@@ -12,8 +13,11 @@ class Database:
         try:
             with open(self.filename, 'r') as f:
                 self.data = json.load(f)
+            if not self.data:  # If file is empty or contains just {}
+                self.data = {"users": []}  # Initialize with a default "users" table
+                self.save_database()
         except FileNotFoundError:
-            self.data = {}
+            self.data = {"users": []}
             self.save_database()
 
     def save_database(self):
@@ -22,6 +26,7 @@ class Database:
             json.dump(self.data, f, indent=2, default=str)
 
     def create(self, table: str, data: Dict) -> Dict[str, Any]:
+        logging.debug(f"Creating record in table: {table}")
         """Create a new record"""
         if table not in self.data:
             self.data[table] = []

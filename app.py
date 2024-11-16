@@ -1,26 +1,3 @@
-# from flask import Flask, render_template, request, jsonify
-# import os
-# from dotenv import load_dotenv
-
-# # Debug prints
-# print("Starting application...")
-
-# app = Flask(__name__)
-# print(f"Template folder path: {app.template_folder}")
-
-# @app.route('/')
-# def home():
-#     print("Home route accessed")
-#     try:
-#         return render_template('index.html')
-#     except Exception as e:
-#         print(f"Error rendering template: {e}")
-#         return str(e)
-
-# if __name__ == '__main__':
-#     print("Starting Flask server...")
-#     app.run(debug=True)
-
 from flask import Flask, render_template, request, jsonify
 from backend_agent import BackendAgent
 from database import Database
