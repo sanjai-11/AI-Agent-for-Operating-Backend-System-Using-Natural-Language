@@ -23,8 +23,25 @@ def execute_command():
         return jsonify({"error": interpretation['error']})
     
     command = interpretation['command']
-    explanation = backend_agent.explain_action(command)
     
+    # Handle multiple operations
+    if "operations" in command:
+        results = []
+        for op in command["operations"]:
+            result = execute_single_operation(op)
+            if not result['success']:
+                return jsonify({"error": f"Operation failed: {result['error']}"})
+            results.append(result)
+        
+        return jsonify({
+            "message": "Multiple operations completed successfully",
+            "data": results
+        })
+    
+    # Handle single operation
+    return execute_single_operation(command)
+
+def execute_single_operation(command):
     operation = command['operation']
     table = command['table']
     data = command.get('data', {})
@@ -39,15 +56,17 @@ def execute_command():
     elif operation == 'delete':
         result = database.delete(table, condition)
     else:
-        return jsonify({"error": "Unknown operation"})
+        return {"success": False, "error": "Unknown operation"}
     
     if result['success']:
-        return jsonify({
+        explanation = backend_agent.explain_action(command)
+        return {
+            "success": True,
             "message": explanation,
             "data": result.get('data') or result.get('message')
-        })
+        }
     else:
-        return jsonify({"error": result['error']})
+        return {"success": False, "error": result['error']}
 
 if __name__ == '__main__':
     app.run(debug=True)
