@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
             --success-color: #2ecc71;
             --error-color: #e74c3c;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-image: url('static/home_background.jpg');
@@ -38,13 +40,15 @@
         .header .logo {
             color: #001a33;
             font-weight: bold;
-            font-size: 24px; /* Increased font size */
+            font-size: 24px;
+            /* Increased font size */
         }
 
         .header .buttons {
             display: flex;
             gap: 10px;
-            justify-content: flex-end; /* Align buttons to the right */
+            justify-content: flex-end;
+            /* Align buttons to the right */
         }
 
         .header .buttons a {
@@ -55,9 +59,11 @@
             background-color: #08e049;
             color: black;
             border: none;
-            padding: 10px 20px; /* Increased padding */
+            padding: 10px 20px;
+            /* Increased padding */
             border-radius: 5px;
-            font-size: 16px; /* Increased font size */
+            font-size: 16px;
+            /* Increased font size */
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -69,7 +75,8 @@
         .header .profile-section {
             display: flex;
             align-items: center;
-            color: black; /* Black color for profile section */
+            color: black;
+            /* Black color for profile section */
             cursor: pointer;
             position: relative;
         }
@@ -81,9 +88,11 @@
         .header .profile-section .profile-dropdown {
             display: none;
             position: absolute;
-            top: 40px; /* Adjust the top position as needed */
+            top: 40px;
+            /* Adjust the top position as needed */
             right: 0;
-            background-color: #08e049; /* Green background for dropdown */
+            background-color: #08e049;
+            /* Green background for dropdown */
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -96,14 +105,16 @@
 
         .header .profile-section .profile-dropdown a {
             display: block;
-            color: black; /* Black color for dropdown links */
+            color: black;
+            /* Black color for dropdown links */
             text-decoration: none;
             padding: 5px 0;
             transition: color 0.3s;
         }
 
         .header .profile-section .profile-dropdown a:hover {
-            color: #07a336; /* Darker green on hover */
+            color: #07a336;
+            /* Darker green on hover */
         }
 
         .container {
@@ -223,14 +234,19 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .profile-section {
             display: flex;
             align-items: center;
-            color: black; /* Black color for profile section */
+            color: black;
             cursor: pointer;
             position: relative;
         }
@@ -242,9 +258,9 @@
         .profile-section .profile-dropdown {
             display: none;
             position: absolute;
-            top: 40px; /* Adjust the top position as needed */
+            top: 40px;
             right: 0;
-            background-color: #08e049; /* Green background for dropdown */
+            background-color: #08e049;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -257,14 +273,16 @@
 
         .profile-section .profile-dropdown a {
             display: block;
-            color: black; /* Black color for dropdown links */
+            color: black;
+            /* Black color for dropdown links */
             text-decoration: none;
             padding: 5px 0;
             transition: color 0.3s;
         }
 
         .profile-section .profile-dropdown a:hover {
-            color: #07a336; /* Darker green on hover */
+            color: #07a336;
+            /* Darker green on hover */
         }
 
         .records-table {
@@ -290,6 +308,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <div class="logo">AI Backend Agent</div>
@@ -306,7 +325,8 @@
             <div class="card-body">
                 <h5 class="card-title mb-3">Enter Your Command</h5>
                 <div class="input-group mb-3">
-                    <input type="text" id="commandInput" class="form-control command-input" placeholder="Type your command here...">
+                    <input type="text" id="commandInput" class="form-control command-input"
+                        placeholder="Type your command here...">
                     <button class="btn btn-primary execute-btn" onclick="executeCommand()">
                         Execute
                         <div class="loading-spinner" id="spinner"></div>
@@ -336,7 +356,7 @@
                     <table class="records-table">
                         <thead>
                             <tr>
-                                <th>Key</th>
+                                <th>ID</th>
                                 <th>Value</th>
                                 <th>Created</th>
                                 <th>Updated</th>
@@ -345,7 +365,7 @@
                         <tbody>
                             {% for record in records %}
                             <tr>
-                                <td>{{ record.key }}</td>
+                                <td>{{ record.id }}</td>
                                 <td>{{ record.value }}</td>
                                 <td>{{ record.created_at }}</td>
                                 <td>{{ record.updated_at }}</td>
@@ -362,7 +382,6 @@
         function fillCommand(command) {
             document.getElementById('commandInput').value = command;
         }
-
         function executeCommand() {
             const commandInput = document.getElementById('commandInput');
             const resultArea = document.getElementById('resultArea');
@@ -383,20 +402,39 @@
                 },
                 body: `command=${encodeURIComponent(command)}`
             })
-            .then(response => response.json())
-            .then(data => {
-                showResult(data);
-                if (!data.error) {
-                    commandInput.value = ''; // Clear input on success
-                }
+                .then(response => response.json())
+                .then(data => {
+                    showResult(data);
+                    if (!data.error) {
+                        commandInput.value = '';
+                        if (command.startsWith('create') || command.startsWith('update') || command.startsWith('delete')) {
+                            readAndDisplayRecords();
+                        }
+                    }
+                })
+                .catch(error => {
+                    showResult({ error: error.toString() });
+                })
+                .finally(() => {
+                    spinner.style.display = 'none';
+                });
+        }
+
+        function readAndDisplayRecords() {
+            fetch('/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'command=read'
             })
-            .catch(error => {
-                showResult({ error: error.toString() });
-            })
-            .finally(() => {
-                // Hide spinner
-                spinner.style.display = 'none';
-            });
+                .then(response => response.json())
+                .then(data => {
+                    showResult(data);
+                })
+                .catch(error => {
+                    showResult({ error: error.toString() });
+                });
         }
 
         function showResult(data) {
@@ -405,19 +443,21 @@
 
             if (data.error) {
                 tableBody.innerHTML = `<tr><td colspan="4"><strong>Error:</strong> ${data.error}</td></tr>`;
-            } else {
+            } else if (Array.isArray(data.data)) {
                 let tableRows = '';
                 data.data.forEach(record => {
                     tableRows += `
-                        <tr>
-                            <td>${record.key}</td>
-                            <td>${record.value}</td>
-                            <td>${record.created_at}</td>
-                            <td>${record.updated_at}</td>
-                        </tr>
-                    `;
+                <tr>
+                    <td>${record.id}</td>
+                    <td>${record.value}</td>
+                    <td>${record.created_at}</td>
+                    <td>${record.updated_at}</td>
+                </tr>
+            `;
                 });
                 tableBody.innerHTML = tableRows;
+            } else {
+                tableBody.innerHTML = `<tr><td colspan="4">No valid data to display</td></tr>`;
             }
         }
 
@@ -425,11 +465,12 @@
             document.querySelector('.profile-section').classList.toggle('active');
         }
 
-        document.getElementById('commandInput').addEventListener('keypress', function(e) {
+        document.getElementById('commandInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 executeCommand();
             }
         });
     </script>
 </body>
+
 </html>
