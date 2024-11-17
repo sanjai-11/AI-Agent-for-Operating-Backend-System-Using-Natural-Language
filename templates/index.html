@@ -69,9 +69,13 @@
         .header .profile-section {
             display: flex;
             align-items: center;
-            color: #08e049; /* Green color for profile section */
+            color: black; /* Black color for profile section */
             cursor: pointer;
             position: relative;
+        }
+
+        .header .profile-section .username {
+            margin-right: 10px;
         }
 
         .header .profile-section .profile-dropdown {
@@ -79,7 +83,7 @@
             position: absolute;
             top: 40px; /* Adjust the top position as needed */
             right: 0;
-            background-color: white;
+            background-color: #08e049; /* Green background for dropdown */
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -92,13 +96,14 @@
 
         .header .profile-section .profile-dropdown a {
             display: block;
-            color: #001a33;
+            color: black; /* Black color for dropdown links */
             text-decoration: none;
             padding: 5px 0;
+            transition: color 0.3s;
         }
 
         .header .profile-section .profile-dropdown a:hover {
-            color: #08e049;
+            color: #07a336; /* Darker green on hover */
         }
 
         .container {
@@ -222,7 +227,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        .header .profile-section {
+        .profile-section {
             display: flex;
             align-items: center;
             color: black; /* Black color for profile section */
@@ -230,11 +235,11 @@
             position: relative;
         }
 
-        .header .profile-section .username {
+        .profile-section .username {
             margin-right: 10px;
         }
 
-        .header .profile-section .profile-dropdown {
+        .profile-section .profile-dropdown {
             display: none;
             position: absolute;
             top: 40px; /* Adjust the top position as needed */
@@ -246,11 +251,11 @@
             z-index: 1;
         }
 
-        .header .profile-section.active .profile-dropdown {
+        .profile-section.active .profile-dropdown {
             display: block;
         }
 
-        .header .profile-section .profile-dropdown a {
+        .profile-section .profile-dropdown a {
             display: block;
             color: black; /* Black color for dropdown links */
             text-decoration: none;
@@ -258,8 +263,30 @@
             transition: color 0.3s;
         }
 
-        .header .profile-section .profile-dropdown a:hover {
+        .profile-section .profile-dropdown a:hover {
             color: #07a336; /* Darker green on hover */
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .records-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .records-table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -287,17 +314,17 @@
                 </div>
                 <div class="examples-section">
                     <h6 class="mb-3">Example Commands:</h6>
-                    <div class="example-command" onclick="fillCommand('create john')">
-                        📝 Create new record "john"
+                    <div class="example-command" onclick="fillCommand('create name john')">
+                        📝 Create new record with name "john"
                     </div>
                     <div class="example-command" onclick="fillCommand('read')">
                         🔍 Show all records
                     </div>
-                    <div class="example-command" onclick="fillCommand('update id 1 to johnson')">
-                        ✏️ Update ID 1 to "johnson"
+                    <div class="example-command" onclick="fillCommand('update id 1 name johnson')">
+                        ✏️ Update record ID 1 with name "johnson"
                     </div>
                     <div class="example-command" onclick="fillCommand('delete id 1')">
-                        🗑️ Delete ID 1
+                        🗑️ Delete record ID 1
                     </div>
                 </div>
             </div>
@@ -305,7 +332,28 @@
         <div class="card results-card">
             <div class="card-body">
                 <h5 class="card-title mb-3">Results</h5>
-                <div id="resultArea"></div>
+                <div id="resultArea">
+                    <table class="records-table">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th>Created</th>
+                                <th>Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr>
+                                <td>{{ record.key }}</td>
+                                <td>{{ record.value }}</td>
+                                <td>{{ record.created_at }}</td>
+                                <td>{{ record.updated_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -353,31 +401,26 @@
 
         function showResult(data) {
             const resultArea = document.getElementById('resultArea');
-            const resultDiv = document.createElement('div');
-            resultDiv.className = `result-item ${data.error ? 'result-error' : 'result-success'}`;
+            const tableBody = resultArea.querySelector('tbody');
 
-            let content = '';
             if (data.error) {
-                content = `<strong>Error:</strong> ${data.error}`;
+                tableBody.innerHTML = `<tr><td colspan="4"><strong>Error:</strong> ${data.error}</td></tr>`;
             } else {
-                content = `<strong>Success:</strong> ${data.message}`;
-                if (data.data) {
-                    content += `
-                        <div class="database-state">
-                            <strong>Current Database State:</strong><br>
-                            <pre style="margin: 0;">${JSON.stringify(data.data, null, 2)}</pre>
-                        </div>
+                let tableRows = '';
+                data.data.forEach(record => {
+                    tableRows += `
+                        <tr>
+                            <td>${record.key}</td>
+                            <td>${record.value}</td>
+                            <td>${record.created_at}</td>
+                            <td>${record.updated_at}</td>
+                        </tr>
                     `;
-                }
-            }
-
-            resultDiv.innerHTML = content;
-            resultArea.insertBefore(resultDiv, resultArea.firstChild);
-
-            while (resultArea.children.length > 5) {
-                resultArea.removeChild(resultArea.lastChild);
+                });
+                tableBody.innerHTML = tableRows;
             }
         }
+
         function toggleProfileDropdown() {
             document.querySelector('.profile-section').classList.toggle('active');
         }
