@@ -124,7 +124,11 @@ class BackendAgent:
                 user_input
             ])
             
-            command = json.loads(response.text)
+            # Check if the response is valid JSON
+            try:
+                command = json.loads(response.text)
+            except json.JSONDecodeError:
+                return {"success": False, "error": f"Invalid response from AI model: {response.text[:100]}..."}
             
             # Check if it's an error response
             if command.get("operation") == "error":
@@ -140,14 +144,12 @@ class BackendAgent:
                         return {"success": False, "error": f"Missing ID for {op['operation']} operation"}
                     if op["operation"] == "update" and "value" not in op.get("data", {}):
                         return {"success": False, "error": "Missing value for update operation"}
-                
+            
             return {"success": True, "command": command}
             
-        except json.JSONDecodeError:
-            return {"success": False, "error": "Invalid command format"}
         except Exception as e:
-            return {"success": False, "error": str(e)}
-
+            return {"success": False, "error": f"An error occurred: {str(e)}"}
+        
     def explain_action(self, command: Dict) -> str:
         """Generate human-readable explanation of the action"""
         operation = command.get("operation")

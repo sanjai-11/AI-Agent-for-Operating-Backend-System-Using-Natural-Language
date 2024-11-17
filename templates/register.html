@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('static/home_background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .header {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+
+        .header .logo {
+            color: #001a33;
+            font-weight: bold;
+            font-size: 24px; /* Increased font size */
+        }
+
+        .header .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header .buttons button {
+            background-color: #08e049;
+            color: black;
+            border: none;
+            padding: 10px 20px; /* Increased padding */
+            border-radius: 5px;
+            font-size: 16px; /* Increased font size */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .buttons button:hover {
+            background-color: #07a336;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 150px;
+        }
+
+        .container {
+            background-color: #001a33; /* Dark navy blue background */
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            color: white; /* Set text color to white for visibility */
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+            color: white;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #08e049;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #08e049;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #07a336;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+            color: white;
+        }
+
+        a {
+            color: #08e049;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #07a336;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        input.error {
+            border-color: #ff4444;
+        }
+
+        /* Toast styling */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .toast {
+            background-color: #ff4444;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .toast.error {
+            background-color: #ff4444;
+        }
+
+        .toast.success {
+            background-color: #2ecc71;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">AI Backend Agent</div>
+        <div class="buttons">
+            <a href="{{ url_for('home') }}">
+                <button>Home</button>
+            </a>
+            <a href="{{ url_for('home') }}">
+                <button>Check Demo</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="container">
+            <h1>Register</h1>
+            <form method="POST" action="{{ url_for('register') }}" id="registerForm" onsubmit="return validateEmail()">
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="text" name="email" id="emailInput" required value="{{ request.form.email if request.form.email }}">
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" name="username" required value="{{ request.form.username if request.form.username }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" name="password" required>
+                </div>
+                
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+
+    <div class="toast-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast {{ category }}" id="toast">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        function validateEmail() {
+            const emailInput = document.getElementById('emailInput');
+            const emailError = document.getElementById('emailError');
+            const email = emailInput.value.trim();
+            
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            if (!emailPattern.test(email)) {
+                emailError.style.display = 'block';
+                emailInput.classList.add('error');
+                return false;
+            } else {
+                emailError.style.display = 'none';
+                emailInput.classList.remove('error');
+                return true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                const toastClass = toast.classList.contains('error') ? 'error' : 'success';
+                toast.classList.add('show', toastClass);
+                setTimeout(() => {
+                    toast.classList.remove('show', toastClass);
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>

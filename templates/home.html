@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Backend Agent - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .get-started-btn {
+            background-color: #08e049;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .get-started-btn:hover {
+            background-color: #07a336;
+        }
+
+        .main-container {
+            height: calc(100vh - 70px);
+            background-image: url("{{ url_for('static', filename='home_background.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 8vh;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .content-card {
+            background-color: #1a2a3a;
+            color: white;
+            padding: 50px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .key-features {
+            margin-bottom: 30px;
+        }
+
+        .key-features ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .key-features li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            font-weight: 300;
+        }
+
+        .key-features li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #08e049;
+        }
+
+        .demo-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background-color: #08e049;
+            color: black;
+            margin-left: 20px;
+            align-self: flex-start; 
+            margin-top: 10px; 
+            margin-left: 700px;
+        }
+
+        .demo-button:hover {
+            background-color: #07a336;
+        }
+
+        .demo-button i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">AI Backend Agent</div>
+        <a href="/register" class="get-started-btn">Get Started</a>
+    </header>
+
+    <main class="main-container">
+        <div class="content-card">
+            <section class="hero-section">
+                <h1>AI Backend Agent</h1>
+                <p>
+                    Interact with your backend system using natural language. Our AI agent interprets your commands to
+                    perform operations like inserting, updating, or deleting key-value pairs. Experience the power of
+                    combining LLM technology with backend operations for seamless database management.
+                </p>
+                <div class="key-features">
+                    <p>Key Features:</p>
+                    <ul>
+                        <li>Natural language processing</li>
+                        <li>Key-value store operations</li>
+                        <li>LLM-powered command interpretation</li>
+                        <li>User-friendly interface</li>
+                    </ul>
+                </div>
+                <a href="#" class="demo-button">
+                    <i class="fas fa-play-circle"></i>
+                    Check Demo
+                </a>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

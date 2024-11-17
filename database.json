@@ -1,46 +1,56 @@
 {
-  "records": [
-    {
-      "id": 2,
-      "value": "case5",
-      "created_at": "2024-11-16 09:23:05.307463",
-      "updated_at": "2024-11-16 09:23:05.307485"
+  "users": {
+    "None": {
+      "email": "jahnavi@gmail.com",
+      "username": "jahnavi",
+      "password_hash": "956218fb752aa168fd9eea7e48540be9279687fec569d33c76cb830a7e4545e9"
     },
-    {
-      "id": 4,
-      "value": "cs",
-      "created_at": "2024-11-16 09:33:21.569251",
-      "updated_at": "2024-11-16 10:01:24.834768"
-    },
-    {
-      "id": 5,
-      "value": "fgju",
-      "created_at": "2024-11-16 09:36:46.376981",
-      "updated_at": "2024-11-16 09:36:46.376994"
-    },
-    {
-      "id": 6,
-      "value": "hello world",
-      "created_at": "2024-11-16 09:37:26.616934",
-      "updated_at": "2024-11-16 09:37:26.616949"
-    },
-    {
-      "id": 7,
-      "value": "ram",
-      "created_at": "2024-11-16 09:57:13.324687",
-      "updated_at": "2024-11-16 09:58:56.865633"
-    },
-    {
-      "id": 8,
-      "value": "jim",
-      "created_at": "2024-11-16 09:58:56.863800",
-      "updated_at": "2024-11-16 09:58:56.863824"
-    },
-    {
-      "id": 9,
-      "value": "john",
-      "created_at": "2024-11-16 09:59:56.872937",
-      "updated_at": "2024-11-16 09:59:56.872957"
+    "1": {
+      "email": "jahnavi1@gmail.com",
+      "username": "jahnavi1",
+      "password_hash": "956218fb752aa168fd9eea7e48540be9279687fec569d33c76cb830a7e4545e9"
     }
-  ]
+  },
+  "records": {
+    "None": [
+      {
+        "id": 1,
+        "value": "johnson",
+        "created_at": "2024-11-16 16:13:58.339861",
+        "updated_at": "2024-11-16 16:16:50.376702"
+      },
+      {
+        "id": 2,
+        "value": "john",
+        "created_at": "2024-11-16 16:16:34.780844",
+        "updated_at": "2024-11-16 16:16:34.780861"
+      }
+    ],
+    "1": [
+      {
+        "id": 1,
+        "value": "ram",
+        "created_at": "2024-11-16 16:29:45.236992",
+        "updated_at": "2024-11-16 17:49:13.980572"
+      },
+      {
+        "id": 2,
+        "value": "john",
+        "created_at": "2024-11-16 17:46:32.423368",
+        "updated_at": "2024-11-16 17:46:32.423382"
+      },
+      {
+        "id": 4,
+        "value": "jack",
+        "created_at": "2024-11-16 17:49:01.292623",
+        "updated_at": "2024-11-16 17:49:01.292647"
+      },
+      {
+        "id": 5,
+        "value": "jack",
+        "created_at": "2024-11-16 17:49:13.979455",
+        "updated_at": "2024-11-16 17:49:13.979472"
+      }
+    ]
+  }
 }
